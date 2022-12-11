@@ -12,7 +12,6 @@ def user_to_user_response(user: User) -> UserResponse:
         phone_number=user.phone_number,
         first_name=user.first_name,
         last_name=user.last_name,
-        avatar=user.avatar,
         is_admin=user.is_admin,
         is_staff=user.is_staff
     )

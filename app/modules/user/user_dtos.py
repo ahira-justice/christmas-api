@@ -11,7 +11,6 @@ class UserResponse(BaseModel):
     phone_number: Optional[str]
     first_name: Optional[str]
     last_name: Optional[str]
-    avatar: Optional[int]
     is_admin: bool = False
     is_staff: bool = False
 
