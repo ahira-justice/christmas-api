@@ -1,0 +1,9 @@
+version: "3.4"
+
+services:
+  christmasapi:
+    env_file:
+      - .dockerenv
+    ports:
+      - "32740:80"
+      - "32741:443"

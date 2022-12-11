@@ -1,0 +1,9 @@
+version: "3.4"
+
+services:
+  christmasapi:
+    container_name: christmasapi
+    image: ${DOCKER_REGISTRY-}christmasapi:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
