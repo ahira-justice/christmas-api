@@ -29,7 +29,6 @@ async def create_user(
         db: Session = Depends(get_db)
 ):
     """Create new user"""
-
     return user_service.create_user(db, user_data)
 
 
@@ -49,7 +48,6 @@ async def search_users(
         db: Session = Depends(get_db)
 ):
     """Get users"""
-
     return user_service.search_users(db, request, query)
 
 
@@ -68,7 +66,6 @@ async def get_current_user(
         db: Session = Depends(get_db)
 ):
     """Get current user"""
-
     return user_service.get_current_user(db, request)
 
 
@@ -90,7 +87,6 @@ async def get_user(
         db: Session = Depends(get_db)
 ):
     """Get user by id"""
-
     return user_service.get_user(db, id, request)
 
 
@@ -113,7 +109,6 @@ async def update_user(
         db: Session = Depends(get_db)
 ):
     """Update user"""
-
     return user_service.update_user(db, id, request, user_data)
 
 
@@ -137,5 +132,4 @@ async def change_admin_status(
         db: Session = Depends(get_db)
 ):
     """Update user admin status"""
-
     return user_service.change_admin_status(db, id, user_admin_status, request)
