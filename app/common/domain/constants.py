@@ -4,6 +4,8 @@ ALEMBIC_INI_DIR = "alembic.ini"
 DOCS_URL = "/api/v1/index.html"
 OPEN_API_URL = "/swagger/v1/swagger.json"
 AUTH_URL = "/api/v1/auth"
+FILES_URL = "/api/v1/files"
+MESSAGES_URL = "/api/v1/messages"
 USERS_URL = "/api/v1/users"
 USER_TOKENS_URL = "/api/v1/user-tokens"
 

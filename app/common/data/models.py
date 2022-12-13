@@ -41,3 +41,19 @@ class UserToken(BaseEntity):
     expiry = Column(BigInteger, nullable=False)
     user_id = Column(BigInteger, ForeignKey("users.id"))
     user = relationship("User")
+
+
+class File(BaseEntity):
+
+    __tablename__ = "files"
+
+    reference = Column(String, nullable=False, unique=True, index=True)
+    url = Column(String, nullable=False)
+
+
+class Message(BaseEntity):
+
+    __tablename__ = "messages"
+    description = Column(String, nullable=True)
+    recording_id = Column(BigInteger, ForeignKey("files.id"))
+    recording = relationship("File")

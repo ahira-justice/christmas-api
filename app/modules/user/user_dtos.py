@@ -55,6 +55,7 @@ class UserUpdateRequest(BaseModel):
     email: EmailStr
     phone_number: str
     first_name: str
+    middle_name: str
     last_name: str
     password: str
 

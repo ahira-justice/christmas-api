@@ -6,6 +6,8 @@ from loguru import logger
 from loguru_logging_intercept import setup_loguru_logging_intercept as logging_intercept
 
 from app.modules.auth.auth_controller import controller as auth_controller
+from app.modules.file.file_controller import controller as file_controller
+from app.modules.message.message_controller import controller as message_controller
 from app.modules.user.user_controller import controller as user_controller
 from app.modules.user_token.user_token_controller import controller as user_token_controller
 from app.common.data.migrations_manager import migrate_database
@@ -62,6 +64,8 @@ async def custom_http_logging_middleware(request: Request, call_next):
 
 
 app.include_router(auth_controller)
+app.include_router(file_controller)
+app.include_router(message_controller)
 app.include_router(user_controller)
 app.include_router(user_token_controller)
 

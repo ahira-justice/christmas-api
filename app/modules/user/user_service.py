@@ -1,9 +1,11 @@
 from fastapi import Request
 from pydantic import EmailStr
+from sqlalchemy.orm import Query
 from sqlalchemy.orm.session import Session
 from typing import List
 
 from app.common.data.models import User
+from app.common.pagination import paginate, page_to_page_response, PageResponse
 from app.modules.auth.auth_dtos import ExternalLoginRequest
 from app.modules.user.user_dtos import UserCreateRequest, UserResponse, UserAdminStatusRequest, UserUpdateRequest
 from app.common import utils
@@ -11,6 +13,7 @@ from app.common.exceptions.app_exceptions import BadRequestException, ForbiddenE
 from app.modules.auth.auth_mappings import external_login_to_user
 from app.modules.user.user_mappings import user_create_to_user, user_to_user_response
 from app.modules.auth import auth_service
+from app.modules.user.user_queries import SearchUsersQuery
 
 
 def create_user(db: Session, user_data: UserCreateRequest) -> UserResponse:
@@ -101,8 +104,9 @@ def update_user(db: Session, id: int, request: Request, user_data: UserUpdateReq
 
     user.username = user_data_username
     user.email = user_data.email
-    user.fname = user_data.first_name
-    user.lname = user_data.last_name
+    user.first_name = user_data.first_name
+    user.middle_name = user_data.middle_name
+    user.last_name = user_data.last_name
     user.password_hash = password_hash
     user.password_salt = password_salt
 
@@ -112,21 +116,36 @@ def update_user(db: Session, id: int, request: Request, user_data: UserUpdateReq
     return user_to_user_response(user)
 
 
-def get_users(db: Session, request: Request) -> List[UserResponse]:
-
-    response = []
+def search_users(db: Session, request: Request, query: SearchUsersQuery) -> PageResponse:
 
     current_user = get_current_user(db, request)
 
     if not current_user.is_admin:
         raise ForbiddenException(current_user.username)
 
-    users = db.query(User).all()
+    db_query = filter_users(db, query)
 
-    for user in users:
-        response.append(user_to_user_response(user))
+    page = paginate(db_query, query.page, query.size)
+    page.content = list(map(user_to_user_response, page.content))
 
-    return response
+    return page_to_page_response(page)
+
+
+def filter_users(db: Session, query: SearchUsersQuery) -> Query:
+    db_query = db.query(User)
+
+    if query.username is not None:
+        db_query = db_query.filter(User.username.contains(query.username))
+    if query.email is not None:
+        db_query = db_query.filter(User.email.contains(query.email))
+    if query.first_name is not None:
+        db_query = db_query.filter(User.first_name.contains(query.first_name))
+    if query.middle_name is not None:
+        db_query = db_query.filter(User.middle_name.contains(query.middle_name))
+    if query.last_name is not None:
+        db_query = db_query.filter(User.last_name.contains(query.last_name))
+
+    return db_query
 
 
 def get_user(db: Session, id: int, request: Request) -> UserResponse:

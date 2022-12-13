@@ -5,10 +5,11 @@ from typing import List
 from app.common.domain.constants import USERS_URL
 from app.common.domain.database import get_db
 from app.common.auth.bearer import BearerAuth
+from app.common.pagination import PageResponse
 from app.modules.user.user_dtos import UserResponse, UserCreateRequest, UserUpdateRequest, UserAdminStatusRequest
-from app.common.dtos.error_dtos import ErrorResponse, ValidationErrorResponse
+from app.common.data.dtos import ErrorResponse, ValidationErrorResponse
 from app.modules.user import user_service
-
+from app.modules.user.user_queries import SearchUsersQuery
 
 controller = APIRouter(
     prefix=USERS_URL,
@@ -38,18 +39,19 @@ async def create_user(
     dependencies=[Depends(BearerAuth())],
     status_code=200,
     responses={
-        200: {"model": List[UserResponse]},
+        200: {"model": PageResponse},
         401: {"model": ErrorResponse},
         403: {"model": ErrorResponse}
     }
 )
-async def get_users(
+async def search_users(
         request: Request,
+        query: SearchUsersQuery = Depends(),
         db: Session = Depends(get_db)
 ):
     """Get users"""
 
-    return user_service.get_users(db, request)
+    return user_service.search_users(db, request, query)
 
 
 @controller.get(
