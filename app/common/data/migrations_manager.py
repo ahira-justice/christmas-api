@@ -1,11 +1,11 @@
-from alembic.config import Config
 from alembic import command
+from alembic.config import Config
+from loguru import logger
 from sqlalchemy.orm.session import Session
 
+from app.common.data.models import User
 from app.common.domain.config import ADMIN_USERNAME, ADMIN_FIRST_NAME, ADMIN_LAST_NAME, ADMIN_PASSWORD
 from app.common.domain.database import SessionLocal
-from app.common.data.models import User
-from loguru import logger
 from app.modules.user import user_service
 
 

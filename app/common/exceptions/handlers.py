@@ -1,12 +1,11 @@
 from fastapi import Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
-
+from loguru import logger
 from starlette import status
 from starlette.responses import JSONResponse
 
 from app.common.exceptions.app_exceptions import AppDomainException, SystemErrorException
-from loguru import logger
 
 
 async def validation_exception_handler(request: Request, ex: RequestValidationError) -> JSONResponse:

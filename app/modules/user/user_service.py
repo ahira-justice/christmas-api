@@ -2,17 +2,16 @@ from fastapi import Request
 from pydantic import EmailStr
 from sqlalchemy.orm import Query
 from sqlalchemy.orm.session import Session
-from typing import List
 
-from app.common.data.models import User
-from app.common.pagination import paginate, page_to_page_response, PageResponse
-from app.modules.auth.auth_dtos import ExternalLoginRequest
-from app.modules.user.user_dtos import UserCreateRequest, UserResponse, UserAdminStatusRequest, UserUpdateRequest
 from app.common import utils
+from app.common.data.models import User
 from app.common.exceptions.app_exceptions import BadRequestException, ForbiddenException, NotFoundException
-from app.modules.auth.auth_mappings import external_login_to_user
-from app.modules.user.user_mappings import user_create_to_user, user_to_user_response
+from app.common.pagination import paginate, page_to_page_response, PageResponse
 from app.modules.auth import auth_service
+from app.modules.auth.auth_dtos import ExternalLoginRequest
+from app.modules.auth.auth_mappings import external_login_to_user
+from app.modules.user.user_dtos import UserCreateRequest, UserResponse, UserAdminStatusRequest, UserUpdateRequest
+from app.modules.user.user_mappings import user_create_to_user, user_to_user_response
 from app.modules.user.user_queries import SearchUsersQuery
 
 
@@ -57,8 +56,8 @@ def set_super_admin(db: Session, id: int):
     return user_to_user_response(user)
 
 
-def change_admin_status(db: Session, id: int, user_admin_status: UserAdminStatusRequest, request: Request) -> UserResponse:
-
+def change_admin_status(db: Session, id: int, user_admin_status: UserAdminStatusRequest,
+                        request: Request) -> UserResponse:
     current_user = get_current_user(db, request)
 
     if not current_user.is_staff:

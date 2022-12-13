@@ -1,7 +1,7 @@
 from fastapi import Request
 from fastapi.security.http import HTTPBearer
-from app.common.domain.database import SessionLocal
 
+from app.common.domain.database import SessionLocal
 from app.common.exceptions.app_exceptions import UnauthorizedRequestException
 from app.modules.auth import auth_service
 

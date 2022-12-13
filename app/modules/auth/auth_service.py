@@ -1,9 +1,9 @@
 import hashlib
 import string
-import jwt
 import time
-
 from datetime import datetime, timedelta
+
+import jwt
 from sqlalchemy.orm.session import Session
 
 from app.common import utils
@@ -11,13 +11,13 @@ from app.common.data.enums import UserTokenType
 from app.common.domain.config import USER_TOKEN_RESET_PASSWORD_EXPIRE_MINUTES, USER_TOKEN_RESET_PASSWORD_LENGTH, \
     ACCESS_TOKEN_EXPIRE_MINUTES, JWT_SIGNING_ALGORITHM, SECRET_KEY
 from app.common.domain.constants import FORGOT_PASSWORD_TEMPLATE
+from app.common.exceptions.app_exceptions import UnauthorizedRequestException, NotFoundException
 from app.modules.auth.auth_dtos import ForgotPasswordRequest, PasswordDto, ResetPasswordRequest, LoginRequest, \
     AccessTokenResponse, ExternalLoginRequest
-from app.modules.user.user_dtos import UserResponse
-from app.common.exceptions.app_exceptions import UnauthorizedRequestException, NotFoundException
-from app.modules.user.user_mappings import user_to_user_response
 from app.modules.email import email_service
 from app.modules.user import user_service
+from app.modules.user.user_dtos import UserResponse
+from app.modules.user.user_mappings import user_to_user_response
 from app.modules.user_token import user_token_service
 
 

@@ -1,5 +1,5 @@
-from app.common.domain.database import SessionLocal
 from app.common.data.models import User
+from app.common.domain.database import SessionLocal
 
 
 def is_not_null(value) -> bool:

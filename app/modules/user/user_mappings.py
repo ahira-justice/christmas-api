@@ -1,6 +1,6 @@
+from app.common import utils
 from app.common.data.models import User
 from app.modules.user.user_dtos import UserResponse, UserCreateRequest
-from app.common import utils
 
 
 def user_to_user_response(user: User) -> UserResponse:

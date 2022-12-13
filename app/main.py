@@ -5,17 +5,17 @@ from fastapi.responses import RedirectResponse
 from loguru import logger
 from loguru_logging_intercept import setup_loguru_logging_intercept as logging_intercept
 
-from app.modules.auth.auth_controller import controller as auth_controller
-from app.modules.file.file_controller import controller as file_controller
-from app.modules.message.message_controller import controller as message_controller
-from app.modules.user.user_controller import controller as user_controller
-from app.modules.user_token.user_token_controller import controller as user_token_controller
 from app.common.data.migrations_manager import migrate_database
 from app.common.domain.config import ENVIRONMENT, SQLALCHEMY_DATABASE_URL
 from app.common.domain.constants import ALEMBIC_INI_DIR, DOCS_URL, MIGRATIONS_DIR, OPEN_API_URL
 from app.common.exceptions.app_exceptions import AppDomainException
 from app.common.exceptions.handlers import exception_handler, app_exception_handler, validation_exception_handler
 from app.common.middleware.handlers import http_logging_middleware
+from app.modules.auth.auth_controller import controller as auth_controller
+from app.modules.file.file_controller import controller as file_controller
+from app.modules.message.message_controller import controller as message_controller
+from app.modules.user.user_controller import controller as user_controller
+from app.modules.user_token.user_token_controller import controller as user_token_controller
 
 logging_intercept(
     modules=("uvicorn", "alembic", "sqlalchemy")

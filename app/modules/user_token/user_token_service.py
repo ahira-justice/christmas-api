@@ -1,15 +1,17 @@
 from datetime import datetime, timedelta
+
 from sqlalchemy.orm.session import Session
 
 from app.common import utils
-from app.common.data.models import UserToken
 from app.common.data.enums import UserTokenType
-from app.modules.user_token.user_token_dtos import VerifyUserTokenRequest
+from app.common.data.models import UserToken
 from app.common.exceptions.app_exceptions import BadRequestException
 from app.modules.user import user_service
+from app.modules.user_token.user_token_dtos import VerifyUserTokenRequest
 
 
-def generate_token(db: Session, length: int, keyspace: str, expiry: int, token_type: UserTokenType, user_id: int) -> UserToken:
+def generate_token(db: Session, length: int, keyspace: str, expiry: int, token_type: UserTokenType,
+                   user_id: int) -> UserToken:
     user = user_service.get_user_by_id(db, user_id)
 
     validate_expiry(expiry)
@@ -48,7 +50,8 @@ def verify_user_token(db: Session, request: VerifyUserTokenRequest) -> bool:
 
 
 def validate_token(db: Session, user_id: int, token: str, token_type: UserTokenType) -> bool:
-    user_token = db.query(UserToken).filter(UserToken.user_id == user_id, UserToken.token_type == token_type.name).first()
+    user_token = db.query(UserToken).filter(UserToken.user_id == user_id,
+                                            UserToken.token_type == token_type.name).first()
 
     if not user_token:
         raise BadRequestException(f"User token for token type: {token_type.name} does not exist for given user")
@@ -57,7 +60,7 @@ def validate_token(db: Session, user_id: int, token: str, token_type: UserTokenT
 
     if datetime.utcnow() > expiry:
         raise BadRequestException("User token has expired, please try again")
-    
+
     return user_token.token == token
 
 

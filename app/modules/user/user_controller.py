@@ -1,14 +1,13 @@
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm.session import Session
-from typing import List
 
+from app.common.auth.bearer import BearerAuth
+from app.common.data.dtos import ErrorResponse, ValidationErrorResponse
 from app.common.domain.constants import USERS_URL
 from app.common.domain.database import get_db
-from app.common.auth.bearer import BearerAuth
 from app.common.pagination import PageResponse
-from app.modules.user.user_dtos import UserResponse, UserCreateRequest, UserUpdateRequest, UserAdminStatusRequest
-from app.common.data.dtos import ErrorResponse, ValidationErrorResponse
 from app.modules.user import user_service
+from app.modules.user.user_dtos import UserResponse, UserCreateRequest, UserUpdateRequest, UserAdminStatusRequest
 from app.modules.user.user_queries import SearchUsersQuery
 
 controller = APIRouter(

@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm.session import Session
 
+from app.common.data.dtos import ErrorResponse, ValidationErrorResponse
 from app.common.domain.constants import AUTH_URL
 from app.common.domain.database import get_db
+from app.modules.auth import auth_service
 from app.modules.auth.auth_dtos import AccessTokenResponse, ExternalLoginRequest, ResetPasswordRequest, \
     ForgotPasswordRequest, LoginRequest
 from app.modules.user.user_dtos import UserResponse
-from app.common.data.dtos import ErrorResponse, ValidationErrorResponse
-from app.modules.auth import auth_service
 
 controller = APIRouter(
     prefix=AUTH_URL,

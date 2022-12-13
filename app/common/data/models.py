@@ -1,7 +1,7 @@
+from datetime import datetime
+
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, BigInteger, LargeBinary, String
 from sqlalchemy.orm import relationship
-
-from datetime import datetime
 
 from app.common.domain.database import Base
 

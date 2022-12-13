@@ -1,4 +1,5 @@
 from typing import Optional
+
 from pydantic import BaseModel, EmailStr, validator
 
 from app.modules.user import user_validator

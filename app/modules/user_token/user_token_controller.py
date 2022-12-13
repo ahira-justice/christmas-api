@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm.session import Session
 
 from app.common.auth.bearer import BearerAuth
+from app.common.data.dtos import ErrorResponse, ValidationErrorResponse
 from app.common.domain.constants import USER_TOKENS_URL
 from app.common.domain.database import get_db
-from app.common.data.dtos import ErrorResponse, ValidationErrorResponse
-from app.modules.user_token.user_token_dtos import VerifyUserTokenRequest
 from app.modules.user_token import user_token_service
+from app.modules.user_token.user_token_dtos import VerifyUserTokenRequest
 
 controller = APIRouter(
     prefix=USER_TOKENS_URL,

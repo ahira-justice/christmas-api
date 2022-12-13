@@ -1,5 +1,3 @@
-from typing import List
-
 from sqlalchemy.orm import Query
 from sqlalchemy.orm.session import Session
 from starlette.requests import Request
