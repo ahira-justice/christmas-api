@@ -22,7 +22,6 @@ from app.modules.user_token import user_token_service
 
 
 def get_user_password(db: Session, username: str) -> PasswordDto:
-
     user = user_service.get_user_by_username(db, username)
 
     response = PasswordDto(
@@ -60,8 +59,14 @@ def authenticate_user(db: Session, username: str, password: str) -> bool:
 def forgot_password(db: Session, forgot_password_data: ForgotPasswordRequest) -> None:
     user = user_service.get_user_by_username(db, forgot_password_data.username)
 
-    user_token = user_token_service.generate_token(db, USER_TOKEN_RESET_PASSWORD_LENGTH, string.ascii_letters,
-                                                   USER_TOKEN_RESET_PASSWORD_EXPIRE_MINUTES, UserTokenType.RESET_PASSWORD, user.id)
+    user_token = user_token_service.generate_token(
+        db,
+        USER_TOKEN_RESET_PASSWORD_LENGTH,
+        string.ascii_letters,
+        USER_TOKEN_RESET_PASSWORD_EXPIRE_MINUTES,
+        UserTokenType.RESET_PASSWORD,
+        user.id
+    )
 
     payload = {
         "token": user_token.token
@@ -87,7 +92,6 @@ def reset_password(db: Session, reset_password_data: ResetPasswordRequest) -> Us
 
 
 def get_access_token(db: Session, login_data: LoginRequest) -> AccessTokenResponse:
-
     if not authenticate_user(db, login_data.username, login_data.password):
         raise UnauthorizedRequestException("Incorrect username or password")
 
@@ -98,7 +102,6 @@ def get_access_token(db: Session, login_data: LoginRequest) -> AccessTokenRespon
 
 
 def get_access_token_for_external_login(db: Session, external_login_data: ExternalLoginRequest) -> AccessTokenResponse:
-
     username = external_login_data.email if external_login_data.email else external_login_data.phone_number
 
     try:
@@ -113,7 +116,6 @@ def get_access_token_for_external_login(db: Session, external_login_data: Extern
 
 
 def decode_jwt(db: Session, token: str) -> dict:
-
     try:
         decoded_token = jwt.decode(token, SECRET_KEY, algorithms=[JWT_SIGNING_ALGORITHM])
     except jwt.PyJWTError:
@@ -136,7 +138,6 @@ def decode_jwt(db: Session, token: str) -> dict:
 
 
 def verify_jwt(db: Session, token: str) -> bool:
-
     if not decode_jwt(db, token):
         return False
 

@@ -17,15 +17,12 @@ from app.common.exceptions.app_exceptions import AppDomainException
 from app.common.exceptions.handlers import exception_handler, app_exception_handler, validation_exception_handler
 from app.common.middleware.handlers import http_logging_middleware
 
-
 logging_intercept(
     modules=("uvicorn", "alembic", "sqlalchemy")
 )
 
-
 if ENVIRONMENT != "TEST":
     migrate_database(MIGRATIONS_DIR, ALEMBIC_INI_DIR, SQLALCHEMY_DATABASE_URL)
-
 
 app = FastAPI(
     title="Christmas API",
@@ -33,7 +30,6 @@ app = FastAPI(
     openapi_url=OPEN_API_URL,
     docs_url=DOCS_URL
 )
-
 
 app.add_middleware(
     CORSMiddleware,

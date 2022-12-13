@@ -10,7 +10,6 @@ from app.modules.user import user_service
 
 
 def generate_token(db: Session, length: int, keyspace: str, expiry: int, token_type: UserTokenType, user_id: int) -> UserToken:
-
     user = user_service.get_user_by_id(db, user_id)
 
     validate_expiry(expiry)
@@ -32,16 +31,14 @@ def generate_token(db: Session, length: int, keyspace: str, expiry: int, token_t
 
 
 def use_token(db: Session, user_id: int, token: str, token_type: UserTokenType):
-
     if not validate_token(db, user_id, token, token_type):
         raise BadRequestException("Invalid user token")
-    
+
     db.query(UserToken).filter(UserToken.user_id == user_id, UserToken.token_type == token_type.name).delete()
     db.commit()
 
 
 def verify_user_token(db: Session, request: VerifyUserTokenRequest) -> bool:
-
     user = user_service.get_user_by_username(db, request.username)
 
     if request.token_type not in UserTokenType.__members__:
@@ -51,7 +48,6 @@ def verify_user_token(db: Session, request: VerifyUserTokenRequest) -> bool:
 
 
 def validate_token(db: Session, user_id: int, token: str, token_type: UserTokenType) -> bool:
-
     user_token = db.query(UserToken).filter(UserToken.user_id == user_id, UserToken.token_type == token_type.name).first()
 
     if not user_token:

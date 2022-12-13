@@ -10,7 +10,6 @@ from app.modules.user import user_service
 
 
 def migrate_database(script_location: str, alembic_ini_location: str, dsn: str) -> None:
-
     logger.info(f"Running DB migrations in {script_location} on {dsn}")
 
     cfg = Config(alembic_ini_location)

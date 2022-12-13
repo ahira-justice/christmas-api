@@ -3,7 +3,6 @@ from app.modules.auth.auth_dtos import ExternalLoginRequest
 
 
 def external_login_to_user(external_login: ExternalLoginRequest) -> User:
-
     username = external_login.email if external_login.email else external_login.phone_number
 
     result = User(

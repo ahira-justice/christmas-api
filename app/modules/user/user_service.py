@@ -17,7 +17,6 @@ from app.modules.user.user_queries import SearchUsersQuery
 
 
 def create_user(db: Session, user_data: UserCreateRequest) -> UserResponse:
-
     user = user_create_to_user(user_data)
 
     db.add(user)
@@ -28,7 +27,6 @@ def create_user(db: Session, user_data: UserCreateRequest) -> UserResponse:
 
 
 def create_social_user(db: Session, external_login_data: ExternalLoginRequest):
-
     user = external_login_to_user(external_login_data)
 
     db.add(user)
@@ -37,7 +35,6 @@ def create_social_user(db: Session, external_login_data: ExternalLoginRequest):
 
 
 def seed_user(db: Session, username: str, first_name: str, last_name: str, password: str) -> UserResponse:
-
     payload = UserCreateRequest(
         username=username,
         first_name=first_name,
@@ -50,7 +47,6 @@ def seed_user(db: Session, username: str, first_name: str, last_name: str, passw
 
 
 def set_super_admin(db: Session, id: int):
-
     user = db.query(User).filter(User.id == id).first()
     user.is_admin = True
     user.is_staff = True
@@ -84,7 +80,6 @@ def change_admin_status(db: Session, id: int, user_admin_status: UserAdminStatus
 
 
 def update_user(db: Session, id: int, request: Request, user_data: UserUpdateRequest) -> UserResponse:
-
     username = get_username_from_token(db, request)
 
     password_hash, password_salt = utils.generate_hash_and_salt(user_data.password)
@@ -117,7 +112,6 @@ def update_user(db: Session, id: int, request: Request, user_data: UserUpdateReq
 
 
 def search_users(db: Session, request: Request, query: SearchUsersQuery) -> PageResponse:
-
     current_user = get_current_user(db, request)
 
     if not current_user.is_admin:
@@ -149,7 +143,6 @@ def filter_users(db: Session, query: SearchUsersQuery) -> Query:
 
 
 def get_user(db: Session, id: int, request: Request) -> UserResponse:
-
     current_user = get_current_user(db, request)
     user = get_user_by_id(db, id)
 
@@ -160,7 +153,6 @@ def get_user(db: Session, id: int, request: Request) -> UserResponse:
 
 
 def get_current_user(db: Session, request: Request) -> UserResponse:
-
     username = get_username_from_token(db, request)
     user = get_user_by_username(db, username)
 
@@ -168,7 +160,6 @@ def get_current_user(db: Session, request: Request) -> UserResponse:
 
 
 def get_user_by_username(db: Session, username: str) -> User:
-
     user = db.query(User).filter(User.username == username).first()
 
     if not user:
@@ -178,7 +169,6 @@ def get_user_by_username(db: Session, username: str) -> User:
 
 
 def get_user_by_id(db: Session, id: int) -> User:
-
     user = db.query(User).filter(User.id == id).first()
 
     if not user:
@@ -188,7 +178,6 @@ def get_user_by_id(db: Session, id: int) -> User:
 
 
 def get_username_from_token(db: Session, request: Request) -> EmailStr:
-
     token = request.headers.get("Authorization").split(" ")[1]
     payload = auth_service.decode_jwt(db, token)
     return payload.get("sub")

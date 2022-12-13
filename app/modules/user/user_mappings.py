@@ -4,7 +4,6 @@ from app.common import utils
 
 
 def user_to_user_response(user: User) -> UserResponse:
-
     result = UserResponse(
         id=user.id,
         username=user.username,
@@ -20,7 +19,6 @@ def user_to_user_response(user: User) -> UserResponse:
 
 
 def user_create_to_user(user_create: UserCreateRequest) -> User:
-
     password_hash, password_salt = utils.generate_hash_and_salt(user_create.password)
 
     result = User(

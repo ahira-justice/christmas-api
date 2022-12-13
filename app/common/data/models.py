@@ -7,7 +7,6 @@ from app.common.domain.database import Base
 
 
 class BaseEntity(Base):
-
     __abstract__ = True
 
     id = Column(BigInteger, primary_key=True, index=True)
@@ -17,7 +16,6 @@ class BaseEntity(Base):
 
 
 class User(BaseEntity):
-
     __tablename__ = "users"
 
     first_name = Column(String, nullable=True)
@@ -33,7 +31,6 @@ class User(BaseEntity):
 
 
 class UserToken(BaseEntity):
-
     __tablename__ = "user_tokens"
 
     token = Column(String, nullable=False, index=True)
@@ -44,7 +41,6 @@ class UserToken(BaseEntity):
 
 
 class File(BaseEntity):
-
     __tablename__ = "files"
 
     reference = Column(String, nullable=False, unique=True, index=True)
@@ -52,7 +48,6 @@ class File(BaseEntity):
 
 
 class Message(BaseEntity):
-
     __tablename__ = "messages"
     description = Column(String, nullable=True)
     recording_id = Column(BigInteger, ForeignKey("files.id"))

@@ -25,11 +25,10 @@ controller = APIRouter(
     }
 )
 async def get_access_token(
-    login_data: LoginRequest,
-    db: Session = Depends(get_db)
+        login_data: LoginRequest,
+        db: Session = Depends(get_db)
 ):
     """Generate access token for valid credentials"""
-
     return auth_service.get_access_token(db, login_data)
 
 
@@ -42,11 +41,10 @@ async def get_access_token(
     }
 )
 async def get_access_token_for_external_login(
-    external_login_data: ExternalLoginRequest,
-    db: Session = Depends(get_db)
+        external_login_data: ExternalLoginRequest,
+        db: Session = Depends(get_db)
 ):
     """Generate access token for valid credentials for social login"""
-
     return auth_service.get_access_token_for_external_login(db, external_login_data)
 
 
@@ -60,11 +58,10 @@ async def get_access_token_for_external_login(
     }
 )
 async def forgot_password(
-    forgot_password_data: ForgotPasswordRequest,
-    db: Session = Depends(get_db)
+        forgot_password_data: ForgotPasswordRequest,
+        db: Session = Depends(get_db)
 ):
     """Generate password reset link"""
-
     auth_service.forgot_password(db, forgot_password_data)
 
 
@@ -78,9 +75,8 @@ async def forgot_password(
     }
 )
 async def reset_password(
-    reset_password_data: ResetPasswordRequest,
-    db: Session = Depends(get_db)
+        reset_password_data: ResetPasswordRequest,
+        db: Session = Depends(get_db)
 ):
     """Reset user password"""
-
     return auth_service.reset_password(db, reset_password_data)

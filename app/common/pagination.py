@@ -56,4 +56,3 @@ def paginate(query, page, size):
 
     total = query.order_by(None).count()
     return Page(content, page, size, total)
-

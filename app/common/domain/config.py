@@ -4,9 +4,7 @@ from dotenv import load_dotenv
 
 from app.common.domain.constants import TEST_DATABASE_URL
 
-
 load_dotenv()
-
 
 ENVIRONMENT = os.environ.get("ENVIRONMENT")
 SQLALCHEMY_DATABASE_URL = os.environ.get("SQLALCHEMY_DATABASE_URL")

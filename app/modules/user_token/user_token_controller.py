@@ -8,7 +8,6 @@ from app.common.data.dtos import ErrorResponse, ValidationErrorResponse
 from app.modules.user_token.user_token_dtos import VerifyUserTokenRequest
 from app.modules.user_token import user_token_service
 
-
 controller = APIRouter(
     prefix=USER_TOKENS_URL,
     tags=["User Tokens"]
@@ -26,9 +25,8 @@ controller = APIRouter(
     }
 )
 async def verify_user_token(
-    request: VerifyUserTokenRequest,
-    db: Session = Depends(get_db)
+        request: VerifyUserTokenRequest,
+        db: Session = Depends(get_db)
 ):
     """Verify user token"""
-
     return user_token_service.verify_user_token(db, request)
