@@ -1,3 +1,4 @@
+import mimetypes
 import uuid
 
 import boto3
@@ -30,9 +31,11 @@ def upload_file(db: Session, file_upload: UploadFile) -> FileResponse:
 def upload_file_to_bucket(reference: str, file_upload: UploadFile) -> str:
     s3 = boto3.resource("s3", aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
     bucket = s3.Bucket(S3_BUCKET_NAME)
-    bucket.upload_fileobj(file_upload.file, reference)
+    extension = mimetypes.guess_extension(file_upload.content_type)
 
-    return f"https://{S3_BUCKET_NAME}.s3.amazonaws.com/{reference}"
+    bucket.upload_fileobj(file_upload.file, f"public/{reference}{extension}")
+
+    return f"https://{S3_BUCKET_NAME}.s3.amazonaws.com/public/{reference}{extension}"
 
 
 def get_file_by_reference(db: Session, reference: str) -> File:
