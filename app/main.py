@@ -2,12 +2,13 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
+from logging.config import fileConfig as configure_logging
 from loguru import logger
-from loguru_logging_intercept import setup_loguru_logging_intercept as logging_intercept
 
+from app.common.config.loguru_logging_intercept import setup_loguru_logging_intercept
 from app.common.data.migrations_manager import migrate_database
 from app.common.domain.config import ENVIRONMENT, SQLALCHEMY_DATABASE_URL
-from app.common.domain.constants import ALEMBIC_INI_DIR, DOCS_URL, MIGRATIONS_DIR, OPEN_API_URL
+from app.common.domain.constants import ALEMBIC_INI_DIR, LOGGING_CONFIG_DIR, DOCS_URL, MIGRATIONS_DIR, OPEN_API_URL
 from app.common.exceptions.app_exceptions import AppDomainException
 from app.common.exceptions.handlers import exception_handler, app_exception_handler, validation_exception_handler
 from app.common.middleware.handlers import http_logging_middleware
@@ -17,12 +18,18 @@ from app.modules.message.message_controller import controller as message_control
 from app.modules.user.user_controller import controller as user_controller
 from app.modules.user_token.user_token_controller import controller as user_token_controller
 
-logging_intercept(
-    modules=("uvicorn", "alembic", "sqlalchemy")
+
+configure_logging(LOGGING_CONFIG_DIR, disable_existing_loggers=False)
+setup_loguru_logging_intercept(
+    modules=(
+        "uvicorn", "uvicorn.access", "uvicorn.error", "alembic", "sqlalchemy.engine"
+        )
 )
+
 
 if ENVIRONMENT != "TEST":
     migrate_database(MIGRATIONS_DIR, ALEMBIC_INI_DIR, SQLALCHEMY_DATABASE_URL)
+
 
 app = FastAPI(
     title="Christmas API",
@@ -30,6 +37,7 @@ app = FastAPI(
     openapi_url=OPEN_API_URL,
     docs_url=DOCS_URL
 )
+
 
 app.add_middleware(
     CORSMiddleware,
